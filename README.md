@@ -1,27 +1,57 @@
-# React + TypeScript + Vite
+# Custom form
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Redirects the user to our checkout page
 
-Currently, two official plugins are available:
+## Purpose
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The main objective of this project is to provide developers with a starting point for creating a subscription form that redirects users to a secure payment page. Upon successful payment, the system saves the user's card information and creates a subscription.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Customizable**: The code is designed to be easily customizable to match your specific branding and requirements. This means almost no dependencies and very barebone implementation. You are encouraged to change as much as you can.
 
-- Configure the top-level `parserOptions` property like this:
+- **Typescript**: The "FieldValues" interface is typed exactly according to the requirements when posting to our checkout page. I.e all the non optional values (the ones that dont have a "?" in front of it) are required and not providing them will result in an error.
+
+## Getting Started
+
+To get started, follow these steps:
+
+1. **Clone the Repository**:
 
 ```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+   git clone git@github.com:Repeat-is/checkoutForm.git;
+
+   cd checkoutForm
+
+   yarn (or npm install)
+
+   yarn dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. **Customize, all the relevant code is in App.tsx**: Open the codebase and start customizing it according to your needs. Update styles, labels, and any placeholders to match your application's design language.
+
+- **ReturnUrl**: In your shop settings on Repeat.is you can set your "return url". Once the order has been successfully processed the user will get redirected back to this url.
+
+- **Webhooks and/or API**: You can utilise Webhooks and/or our API once the order has been made.
+
+3. **Testing**: Thoroughly test the application in a controlled environment to ensure the payment flow, card storage, and subscription creation are working as expected.
+
+## Usage
+
+Once you've customized the code and completed testing, you can deploy the application to your preferred hosting environment. Ensure that you maintain security measures to protect user data.
+
+## Contributions
+
+Contributions to this repository are welcome! If you've made improvements, bug fixes, or added new features that could benefit others, feel free to submit a pull request. Anything that can make our examples more valuable to the developer community are most welcome!
+
+## Disclaimer
+
+Please note that while this example provides a foundation for a usable form, it's essential to comply with relevant legal and regulatory standards, especially those related to user data protection and online payments.
+
+**Remember to replace any placeholder values with real data before deploying this code to a production environment.**
+
+## License
+
+This project is licensed under the [MIT License](LICENSE), allowing you to use, modify, and distribute the codebase for your own purposes.
+
+Happy coding!

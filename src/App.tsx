@@ -2,31 +2,57 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./App.css";
 
+// This is the UUID for the Repeat test store (you can use this or replace with your own)
+const myShopUUID = "59bbc67d-d58f-4c64-b897-7063b90141b4";
+// This is the UUID for the Repeat test product (you can use this or replace with your own)
+// Title, ordering and image are custom fields that are added to the product type, you dont need to add these
+// this is only for demonstration purposes
+const myProducts = [
+  {
+    uuid: "06e7dd11-2328-4f41-ab76-395751d57287",
+    quantity: 5,
+    title: "Repeat test vara",
+    ordering: 1,
+    image: "mynd.jpeg",
+  },
+];
+
 interface Product {
   uuid: string;
   quantity: number;
 }
 interface FieldValues {
-  // Customer is required, name and email are the only required fields
+  // Customer is required
   customer: {
+    // Name and email are the only required fields
     name: string;
     email: string;
 
+    // The rest of the fields are optional
     ssid?: string;
     street?: string;
     postal_code?: number;
     town?: string;
     phone?: string;
   };
+
+  // At least one product is required
   products: Product[];
+
+  // Interval is optional, if it is not set the default interval for the product will be used
+  // (under settings in the Repeat.is backend)
   interval?: {
     type: "MONTH" | "WEEK" | "YEAR";
     count: number;
     editable: boolean;
   };
-  external_ref: string;
+
+  // External ref can be used to identify the order in the Repeat.is backend, not required
+  external_ref?: string;
 }
 
+// A custom interface for the product type, this is so you can add your own fields to the product
+// the "FieldValues" interface is the one that is used by the useForm hook so this is kept separate
 interface MyCustomProduct extends Product {
   title: string;
   ordering: number;
@@ -35,17 +61,8 @@ interface MyCustomProduct extends Product {
 
 export default function App() {
   const { register } = useForm<FieldValues>();
-
   const [interval] = useState<FieldValues["interval"] | undefined>();
-  const [products, setProducts] = useState<MyCustomProduct[]>([
-    {
-      uuid: "06e7dd11-2328-4f41-ab76-395751d57287",
-      quantity: 5,
-      title: "Repeat test vara",
-      ordering: 1,
-      image: "mynd.jpeg",
-    },
-  ]);
+  const [products, setProducts] = useState<MyCustomProduct[]>(myProducts);
 
   return (
     <>
@@ -85,7 +102,7 @@ export default function App() {
         ))}
 
       <form
-        action="https://repeat.is/repeat_checkout/59bbc67d-d58f-4c64-b897-7063b90141b4/"
+        action={`https://repeat.is/repeat_checkout/${myShopUUID}/`}
         method="POST"
       >
         {/* Customer */}
