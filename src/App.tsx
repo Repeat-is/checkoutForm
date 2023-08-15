@@ -1,36 +1,49 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import "./App.css";
 
+interface Product {
+  uuid: string;
+  quantity: number;
+}
 interface FieldValues {
+  // Customer is required, name and email are the only required fields
   customer: {
     name: string;
-    ssid: string;
     email: string;
+
+    ssid?: string;
+    street?: string;
+    postal_code?: number;
+    town?: string;
+    phone?: string;
   };
-  products: {
-    uuid: string;
-    quantity: number;
-    title: string;
-    ordering: number;
-  }[];
-  interval: {
-    type: string;
+  products: Product[];
+  interval?: {
+    type: "MONTH" | "WEEK" | "YEAR";
     count: number;
     editable: boolean;
   };
   external_ref: string;
 }
 
+interface MyCustomProduct extends Product {
+  title: string;
+  ordering: number;
+  image: string;
+}
+
 export default function App() {
   const { register } = useForm<FieldValues>();
 
   const [interval] = useState<FieldValues["interval"] | undefined>();
-  const [products, setProducts] = useState<FieldValues["products"]>([
+  const [products, setProducts] = useState<MyCustomProduct[]>([
     {
       uuid: "06e7dd11-2328-4f41-ab76-395751d57287",
       quantity: 5,
       title: "Repeat test vara",
       ordering: 1,
+      image: "mynd.jpeg",
     },
   ]);
 
@@ -40,24 +53,34 @@ export default function App() {
         .sort((a, b) => a.ordering - b.ordering)
         .map((product) => (
           <div key={product.uuid}>
-            {product.title}
-            <input
-              value={product.quantity}
-              onChange={(e) => {
-                e.preventDefault();
-                setProducts([
-                  ...products.filter(
-                    (_product) => _product.uuid !== product.uuid
-                  ),
-                  {
-                    ...product,
-                    quantity: parseInt(e.target.value),
-                  },
-                ]);
-              }}
-              aria-label="Quantity"
-              type="number"
+            <img
+              style={{ width: 150 }}
+              src={product.image}
+              alt="Product image"
             />
+
+            <div>
+              <strong>{product.title}</strong>
+            </div>
+
+            <div>
+              <label>Magn</label>
+              <input
+                style={{ width: 50, textAlign: "center", marginLeft: 10 }}
+                value={product.quantity}
+                onChange={(e) => {
+                  setProducts([
+                    ...products.filter((p) => p.uuid !== product.uuid),
+                    {
+                      ...product,
+                      quantity: parseInt(e.target.value) || 1,
+                    },
+                  ]);
+                }}
+                aria-label="Quantity"
+                type="number"
+              />
+            </div>
           </div>
         ))}
 
