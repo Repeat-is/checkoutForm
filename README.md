@@ -1,6 +1,8 @@
 # Custom form
 
-### Redirects the user to our checkout page
+## Redirects the user to our checkout page
+
+### Live example here: https://formexample.repeat.is/
 
 ## Purpose
 
