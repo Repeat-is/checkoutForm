@@ -62,7 +62,7 @@ export default function App() {
         ))}
 
       <form
-        action="http://repeat.is/repeat_checkout/59bbc67d-d58f-4c64-b897-7063b90141b4/"
+        action="https://repeat.is/repeat_checkout/59bbc67d-d58f-4c64-b897-7063b90141b4/"
         method="POST"
       >
         {/* Customer */}
