@@ -63,9 +63,10 @@ export default function App() {
   const { register } = useForm<FieldValues>();
   const [interval] = useState<FieldValues["interval"] | undefined>();
   const [products, setProducts] = useState<MyCustomProduct[]>(myProducts);
+  const [customer, setCustomer] = useState<FieldValues["customer"]>();
 
   return (
-    <>
+    <div style={{ width: "100%", display: "block" }}>
       {products
         .sort((a, b) => a.ordering - b.ordering)
         .map((product) => (
@@ -106,16 +107,33 @@ export default function App() {
         method="POST"
       >
         {/* Customer */}
-        <input value="Óli Tómas" {...register("customer.name")} />
+
         <input
-          value="2202863399"
-          placeholder="Kennitala"
-          {...register("customer.ssid")}
+          placeholder="Nafn"
+          {...register("customer.name")}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val)
+              setCustomer({
+                ...customer,
+                name: e.target.value || "",
+                email: customer?.email || "",
+              });
+          }}
         />
+
         <input
-          value="olitomas@olitomas.com"
           placeholder="Netfang"
           {...register("customer.email")}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val)
+              setCustomer({
+                ...customer,
+                name: customer?.name || "",
+                email: e.target.value,
+              });
+          }}
         />
 
         {/* Products */}
@@ -160,6 +178,58 @@ export default function App() {
 
         <input type="submit" />
       </form>
-    </>
+
+      <div>
+        <h2>Or with a link</h2>
+
+        <pre>
+          <a
+            href={`https://repeat.is/repeat_checkout/${myShopUUID}/?name=${encodeURIComponent(
+              customer?.name || ""
+            )}&email=${encodeURIComponent(customer?.email || "")}${products.map(
+              (p, i) =>
+                `&product.${i}.uuid=${p.uuid}&product.${i}.quantity=${p.quantity}`
+            )}`}
+          >
+            {`https://repeat.is/repeat_checkout/${myShopUUID}/?name=${encodeURIComponent(
+              customer?.name || ""
+            )}&email=${encodeURIComponent(customer?.email || "")}${products.map(
+              (p, i) =>
+                `&product.${i}.uuid=${p.uuid}&product.${i}.quantity=${p.quantity}`
+            )}`}
+          </a>
+
+          <br />
+          <br />
+
+          <code>?name=</code>
+          <code>{encodeURIComponent(customer?.name || "")}</code>
+
+          <br />
+          <br />
+
+          <code>&email=</code>
+          <code>{encodeURIComponent(customer?.email || "")}</code>
+
+          <br />
+          <br />
+
+          {products.map((p, i) => (
+            <>
+              <code>&product.{i}.uuid=</code>
+              <code>{p.uuid}</code>
+
+              <br />
+
+              <code>&product.{i}.quantity=</code>
+              <code>{p.quantity}</code>
+
+              <br />
+              <br />
+            </>
+          ))}
+        </pre>
+      </div>
+    </div>
   );
 }
